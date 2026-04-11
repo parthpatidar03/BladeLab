@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 ## Runtime Configuration
 
-OpenAI-backed inference is configured from environment variables at runtime.
+OpenAI-backed inference is configured from environment variables at runtime.    
 The project keeps secrets in a local `.env` file or in the host environment.
 `.env` is ignored by git and should not be committed.
 
@@ -72,7 +72,7 @@ All runtime entrypoints import the template through `python-dotenv`, so copying 
 
 Variables used by the current code paths:
 
-- `OPENAI_API_KEY`: required only when using the OpenAI-backed policy paths
+- `API_KEY`: required only when using the OpenAI-backed policy paths           
 - `MODEL_NAME`: optional; defaults to `gpt-4.1-mini`
 - `API_BASE_URL`: optional; takes precedence over `OPENAI_BASE_URL` when both are set
 - `OPENAI_BASE_URL`: optional fallback for OpenAI-compatible endpoints
@@ -82,8 +82,9 @@ You only need OpenAI credentials when:
 
 - calling the API with `policy_type="openai"`
 - running `python inference.py --openai`
+- running `python inference.py` when `API_KEY` is available and you want the proxy path by default
 
-Heuristic policy flows and the current test suite do not require `OPENAI_API_KEY`.
+Heuristic policy flows and the current test suite do not require `API_KEY`.
 
 ## Usage
 

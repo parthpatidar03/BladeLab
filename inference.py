@@ -20,6 +20,10 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 
 
+def get_api_key():
+    return os.getenv("API_KEY") or os.getenv("OPENAI_API_KEY")
+
+
 STATE_KEYS = [
     "efficiency",
     "pressure_ratio",
@@ -271,9 +275,9 @@ def load_model(model_path=None, device=None, use_heuristic=False):
 
 
 def load_openai_policy(task_name, model_name):
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = get_api_key()
     if not api_key:
-        raise RuntimeError("OPENAI_API_KEY is not set.")
+        raise RuntimeError("API_KEY is not set.")
 
     base_url = API_BASE_URL
     model = model_name if model_name else MODEL_NAME
@@ -458,7 +462,10 @@ def parse_args():
 def main():
     args = parse_args()
     if not args.openai and args.checkpoint is None:
-        args.heuristic = True
+        if get_api_key():
+            args.openai = True
+        else:
+            args.heuristic = True
 
     model_label = args.model if args.openai else (args.checkpoint or "heuristic")
     log_start(args.task, "turbodesigner2", model_label)
